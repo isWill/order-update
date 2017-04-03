@@ -1,5 +1,5 @@
 <template>
-  <div class="ratings" v-el:ratings>
+  <div class="ratings" ref="ratings">
     <div class="ratings-content">
       <div class="overview">
         <div class="overview-left">
@@ -25,11 +25,11 @@
         </div>
       </div>
       <split></split>
-      <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc"
+      <ratingselect @select="selectRating" @toggle="toggleContent" :selectType="selectType" :onlyContent="onlyContent"
                     :ratings="ratings"></ratingselect>
       <div class="rating-wrapper">
         <ul>
-          <li v-for="rating in ratings" v-show="needShow(rating.rateType,rating.text)" class="rating-item">
+          <li v-for="rating in ratings" v-show="needShow(rating.rateType, rating.text)" class="rating-item">
             <div class="avatar">
               <img width="28" height="28" :src="rating.avatar">
             </div>
@@ -59,8 +59,8 @@
   import BScroll from 'better-scroll';
   import {formatDate} from '@/common/js/date';
   import star from '@/components/star/star';
-  import split from '@/components/split/split';
   import ratingselect from '@/components/ratingselect/ratingselect';
+  import split from '@/components/split/split';
 
   const ALL = 2;
   const ERR_OK = 0;
@@ -84,7 +84,7 @@
         if (response.errno === ERR_OK) {
           this.ratings = response.data;
           this.$nextTick(() => {
-            this.scroll = new BScroll(this.$els.ratings, {
+            this.scroll = new BScroll(this.$refs.ratings, {
               click: true
             });
           });
@@ -101,17 +101,15 @@
         } else {
           return type === this.selectType;
         }
-      }
-    },
-    events: {
-      'ratingtype.select'(type) {
+      },
+      selectRating(type) {
         this.selectType = type;
         this.$nextTick(() => {
           this.scroll.refresh();
         });
       },
-      'content.toggle'(onlyContent) {
-        this.onlyContent = onlyContent;
+      toggleContent() {
+        this.onlyContent = !this.onlyContent;
         this.$nextTick(() => {
           this.scroll.refresh();
         });
@@ -177,8 +175,8 @@
           font-size: 0
           .title
             display: inline-block
-            vertical-align: top
             line-height: 18px
+            vertical-align: top
             font-size: 12px
             color: rgb(7, 17, 27)
           .star
@@ -187,8 +185,8 @@
             vertical-align: top
           .score
             display: inline-block
-            vertical-align: top
             line-height: 18px
+            vertical-align: top
             font-size: 12px
             color: rgb(255, 153, 0)
         .delivery-wrapper

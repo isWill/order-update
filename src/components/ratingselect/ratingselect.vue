@@ -2,11 +2,11 @@
   <div class="ratingselect">
     <div class="rating-type border-1px">
       <span @click="select(2,$event)" class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span
-        class="count">{{ratings.length}}</span></span>
+          class="count">{{ratings.length}}</span></span>
       <span @click="select(0,$event)" class="block positive" :class="{'active':selectType===0}">{{desc.positive}}<span
-        class="count">{{positives.length}}</span></span>
+          class="count">{{positives.length}}</span></span>
       <span @click="select(1,$event)" class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span
-        class="count">{{negatives.length}}</span></span>
+          class="count">{{negatives.length}}</span></span>
     </div>
     <div @click="toggleContent" class="switch" :class="{'on':onlyContent}">
       <span class="icon-check_circle"></span>
@@ -64,15 +64,13 @@
         if (!event._constructed) {
           return;
         }
-        this.selectType = type;
-        this.$dispatch('ratingtype.select', type);
+        this.$emit('select', type);
       },
       toggleContent(event) {
         if (!event._constructed) {
           return;
         }
-        this.onlyContent = !this.onlyContent;
-        this.$dispatch('content.toggle', this.onlyContent);
+        this.$emit('toggle');
       }
     }
   };
@@ -92,9 +90,9 @@
         padding: 8px 12px
         margin-right: 8px
         line-height: 16px
+        border-radius: 1px
         font-size: 12px
         color: rgb(77, 85, 93)
-        border-radius: 1px
         &.active
           color: #fff
         .count
