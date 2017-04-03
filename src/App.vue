@@ -17,8 +17,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {urlParse} from 'common/js/util';
-  import header from 'components/header/header.vue';
+  import {urlParse} from '@/common/js/util';
+  import header from '@/components/header/header.vue';
 
   const ERR_OK = 0;
 
